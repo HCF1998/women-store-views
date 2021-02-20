@@ -1,0 +1,307 @@
+[
+  {
+    "label": "A",
+    "options": [
+      {
+        "value": "Afghanistan",
+        "label": "阿富汗",
+        "code": "86"
+      },
+      {
+        "value": "Albania",
+        "label": "阿尔巴尼亚",
+        "code": "86"
+      },
+      {
+        "value": "Algeria",
+        "label": "阿尔及利亚",
+        "code": "86"
+      },
+      {
+        "value": "American Samoa",
+        "label": "美属萨摩亚",
+        "code": "86"
+      },
+      {
+        "value": "Andorra",
+        "label": "安道尔",
+        "code": "86"
+      },
+      {
+        "value": "Angola",
+        "label": "安哥拉",
+        "code": "86"
+      },
+      {
+        "value": "Anguilla",
+        "label": "安圭拉",
+        "code": "86"
+      },
+      {
+        "value": "Antarctica",
+        "label": "南极洲",
+        "code": "86"
+      },
+      {
+        "value": "Antigua and Barbuda",
+        "label": "安提瓜和巴布达",
+        "code": "86"
+      },
+      {
+        "value": "Argentina",
+        "label": "阿根廷",
+        "code": "86"
+      },
+      {
+        "value": "Armenia",
+        "label": "亚美尼亚",
+        "code": "86"
+      },
+      {
+        "value": "Aruba",
+        "label": "阿鲁巴",
+        "code": "86"
+      },
+      {
+        "value": "Australia",
+        "label": "澳大利亚",
+        "code": "86"
+      },
+      {
+        "value": "Austria",
+        "label": "奥地利",
+        "code": "86"
+      },
+      {
+        "value": "Azerbaijan",
+        "label": "阿塞拜疆",
+        "code": "86"
+      }
+    ]
+  },
+  {
+    "label": "B",
+    "options": [
+      {
+        "value": "Bahamas (The)",
+        "label": "巴哈马",
+        "code": "86"
+      },
+      {
+        "value": "Bahrain",
+        "label": "巴林",
+        "code": "86"
+      },
+      {
+        "value": "Bangladesh",
+        "label": "孟加拉国",
+        "code": "86"
+      },
+      {
+        "value": "Barbados",
+        "label": "巴巴多斯",
+        "code": "86"
+      },
+      {
+        "value": "Belarus",
+        "label": "白俄罗斯",
+        "code": "86"
+      },
+      {
+        "value": "Belgium",
+        "label": "比利时",
+        "code": "86"
+      },
+      {
+        "value": "Belize",
+        "label": "伯利兹",
+        "code": "86"
+      },
+      {
+        "value": "Benin",
+        "label": "贝宁",
+        "code": "86"
+      },
+      {
+        "value": "Bermuda",
+        "label": "百慕大",
+        "code": "86"
+      },
+      {
+        "value": "Bhutan",
+        "label": "不丹",
+        "code": "86"
+      },
+      {
+        "value": "Bolivia",
+        "label": "玻利维亚",
+        "code": "86"
+      },
+      {
+        "value": "Caribisch Nederland",
+        "label": "荷兰加勒比区",
+        "code": "86"
+      },
+      {
+        "value": "Bosnia and Herzegovina",
+        "label": "波斯尼亚和黑塞哥维那",
+        "code": "86"
+      },
+      {
+        "value": "Botswana",
+        "label": "博茨瓦纳",
+        "code": "86"
+      },
+      {
+        "value": "Brazil",
+        "label": "巴西",
+        "code": "86"
+      },
+      {
+        "value": "British Indian Ocean Territory (the)",
+        "label": "英属印度洋领地",
+        "code": "86"
+      },
+      {
+        "value": "The British Virgin Islands",
+        "label": "英属维尔京群岛",
+        "code": "86"
+      },
+      {
+        "value": "Brunei Darussalam",
+        "label": "文莱",
+        "code": "86"
+      },
+      {
+        "value": "Bulgaria",
+        "label": "保加利亚",
+        "code": "86"
+      },
+      {
+        "value": "Burkina Faso",
+        "label": "布基纳法索",
+        "code": "86"
+      },
+      {
+        "value": "Burundi",
+        "label": "布隆迪",
+        "code": "86"
+      }
+    ]
+  },
+  {
+    "label": "C",
+    "options": [
+      {
+        "value": "Cambodia",
+        "label": "柬埔寨",
+        "code": "86"
+      },
+      {
+        "value": "Cameroon",
+        "label": "喀麦隆",
+        "code": "86"
+      },
+      {
+        "value": "Canada",
+        "label": "加拿大",
+        "code": "86"
+      },
+      {
+        "value": "Cape Verde",
+        "label": "佛得角",
+        "code": "86"
+      },
+      {
+        "value": "Cayman Islands (the)",
+        "label": "开曼群岛",
+        "code": "86"
+      },
+      {
+        "value": "Central African Republic (the)",
+        "label": "中非",
+        "code": "86"
+      },
+      {
+        "value": "Chad",
+        "label": "乍得",
+        "code": "86"
+      },
+      {
+        "value": "Chile",
+        "label": "智利",
+        "code": "86"
+      },
+      {
+        "value": "China",
+        "label": "中国",
+        "code": "86"
+      },
+      {
+        "value": "Christmas Island",
+        "label": "圣诞岛",
+        "code": "86"
+      },
+      {
+        "value": "Cocos (Keeling) Islands (the)",
+        "label": "科科斯（基林）群岛",
+        "code": "86"
+      },
+      {
+        "value": "Colombia",
+        "label": "哥伦比亚",
+        "code": "86"
+      },
+      {
+        "value": "Comoros",
+        "label": "科摩罗",
+        "code": "86"
+      },
+      {
+        "value": "Congo",
+        "label": "刚果（布）",
+        "code": "86"
+      },
+      {
+        "value": "Cook Islands (the)",
+        "label": "库克群岛",
+        "code": "86"
+      },
+      {
+        "value": "Costa Rica",
+        "label": "哥斯达黎加",
+        "code": "86"
+      },
+      {
+        "value": "Croatia",
+        "label": "克罗地亚",
+        "code": "86"
+      },
+      {
+        "value": "Cuba",
+        "label": "古巴",
+        "code": "86"
+      },
+      {
+        "value": "Curaçao",
+        "label": "库拉索",
+        "code": "86"
+      },
+      {
+        "value": "Cyprus",
+        "label": "塞浦路斯",
+        "code": "86"
+      },
+      {
+        "value": "Czech Republic (the)",
+        "label": "捷克",
+        "code": "86"
+      },
+      {
+        "value": "Côte d'Ivoire",
+        "label": "科特迪瓦",
+        "code": "86"
+      }
+    ]
+  }
+]

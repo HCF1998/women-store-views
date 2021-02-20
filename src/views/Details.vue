@@ -1,37 +1,16 @@
 <template>
     <div id="details">
-        <!-- 头部 -->
-        <div class="page-header">
-            <div class="title">
-                <p>{{ productDetails.product_name }}</p>
-                <div class="list">
-                    <ul>
-                        <li>
-                            <router-link to>概述</router-link>
-                        </li>
-                        <li>
-                            <router-link to>参数</router-link>
-                        </li>
-                        <li>
-                            <router-link to>用户评价</router-link>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- 头部END -->
-
         <!-- 主要内容 -->
         <div class="main">
             <!-- 左侧商品轮播图 -->
             <div class="block">
                 <el-carousel height="560px" v-if="productPicture.length > 1">
                     <el-carousel-item v-for="item in productPicture" :key="item.id">
-                        <img style="height:560px;" :src="$target + item.product_picture" :alt="item.intro" />
+                        <img style="height:560px;" :src="item.product_picture" :alt="item.intro" />
                     </el-carousel-item>
                 </el-carousel>
                 <div v-if="productPicture.length == 1">
-                    <img style="height:560px;" :src="$target + productPicture[0].product_picture" :alt="productPicture[0].intro" />
+                    <img style="height:560px;" :src="productPicture[0].product_picture" :alt="productPicture[0].intro" />
                 </div>
             </div>
             <!-- 左侧商品轮播图END -->
@@ -40,7 +19,7 @@
             <div class="content">
                 <h1 class="name">{{ productDetails.product_name }}</h1>
                 <p class="intro">{{ productDetails.product_intro }}</p>
-                <p class="store">小米自营</p>
+                <p class="store">女性商城</p>
                 <div class="price">
                     <span>{{ productDetails.product_selling_price }}元</span>
                     <span v-show="productDetails.product_price != productDetails.product_selling_price" class="del"
@@ -67,8 +46,6 @@
                 <!-- 内容区底部按钮END -->
                 <div class="pro-policy">
                     <ul>
-                        <li><i class="el-icon-circle-check"></i> 小米自营</li>
-                        <li><i class="el-icon-circle-check"></i> 小米发货</li>
                         <li><i class="el-icon-circle-check"></i> 7天无理由退货</li>
                         <li><i class="el-icon-circle-check"></i> 7天价格保护</li>
                     </ul>
@@ -77,6 +54,22 @@
             <!-- 右侧内容区END -->
         </div>
         <!-- 主要内容END -->
+        <!-- 评论 -->
+        <ul class="evaluate-wrapper">
+            <li v-for="item in evaluate" :key="item.id">
+                <div class="evaluate-wrapper-top">
+                    <img :src="item.avatar" alt="" class="avatar">
+                    <span class="name">{{item.name}}</span>
+                    <span class="time">发布时间： {{item.time}}</span>
+                </div>
+                <div class="evaluate-wrapper-center">
+                    <p>{{item.evaluate}}</p>
+                    <div v-if="item.imgs.length > 0">
+                        <img v-for="(it, i) in item.imgs" :key="i" :src="it" alt="">
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
 </template>
 <script>
@@ -86,9 +79,43 @@ export default {
         return {
             dis: false, // 控制“加入购物车按钮是否可用”
             productID: '', // 商品id
-            productDetails: '', // 商品详细信息
-            productPicture: '', // 商品图片
+            productDetails: {
+                product_name: '衣服1',
+                product_intro: '舒服好看，物美价廉',
+                product_selling_price: 100,
+                product_price: 199,
+
+            }, // 商品详细信息
+            productPicture: [
+                {
+                    product_picture: 'https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg',
+                    intro: '衣服1'
+                },
+                {
+                    product_picture: 'https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg',
+                    intro: '衣服2'
+                }
+            ], // 商品图片
             notCart: false,
+            // 评论列表
+            evaluate: [
+                {
+                    id: '1',
+                    avatar: 'https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg',
+                    name: '用户1',
+                    time: '2020-10-10',
+                    evaluate: '很好很好很好很好很好很好很好很好很好很好',
+                    imgs: ['https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg','https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg']
+                },
+                {
+                    id: '2',
+                    avatar: 'https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg',
+                    name: '用户2',
+                    time: '2020-10-12',
+                    evaluate: '很好很好很好很好很好很好很好很好很好很好',
+                    imgs: ['https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg','https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg']
+                }
+            ],
         }
     },
     // 通过路由获取商品id
@@ -206,6 +233,45 @@ export default {
     },
 }
 </script>
+
+<style lang="scss" scoped>
+    .evaluate-wrapper{
+        width: 1225px;
+        padding: 20px;
+        margin: 0 auto;
+        li{
+            border: 1px solid #ccc;
+            padding: 20px 40px;
+        }
+        &-top{
+            overflow: hidden;
+            border-bottom: 1px dashed #ccc;
+            .avatar{
+                width: 30px;
+                float: left;
+                margin-right: 20px;
+            }
+            .name{
+                float: left;
+                line-height: 40px;
+            }
+            .time{
+                float: right;
+                color: grey;
+            }
+        }
+        &-center{
+            p{
+                margin: 20px 0;
+            }
+            img{
+                width: 60px;
+                margin-right: 20px;
+            }
+        }
+    }
+</style>
+
 <style>
 /* 头部CSS */
 #details .page-header {

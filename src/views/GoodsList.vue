@@ -66,7 +66,7 @@ export default {
     },
     created() {
         // 获取分类列表
-        this.getCategory()
+        // this.getCategory()
     },
     activated() {
         this.activeName = '-1' // 初始化分类列表当前选中的id为-1
@@ -105,7 +105,7 @@ export default {
             this.currentPage = 1
             // 更新地址栏链接，方便刷新页面可以回到原来的页面
             this.$router.push({
-                path: '/goods',
+                name: 'Goods',
                 query: { categoryID: this.categoryID },
             })
         },
@@ -122,7 +122,7 @@ export default {
         },
         // 监听路由变化，更新路由传递了搜索条件
         $route: function(val) {
-            if (val.path == '/goods') {
+            if (val.name == 'GoodsList') {
                 if (val.query.search != undefined) {
                     this.activeName = '-1'
                     this.currentPage = 1

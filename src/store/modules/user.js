@@ -1,7 +1,8 @@
 export default {
     state: {
-        user: '', // 登录的用户
+        user: '用户1', // 登录的用户
         showLogin: false, // 用于控制是否显示登录组件
+        showAgreement: false, // 是否显示协议模态框
     },
     getters: {
         getUser(state) {
@@ -10,6 +11,9 @@ export default {
         getShowLogin(state) {
             return state.showLogin
         },
+        getShowAgreement(state) {
+            return state.showAgreement
+        }
     },
     mutations: {
         setUser(state, data) {
@@ -18,6 +22,9 @@ export default {
         setShowLogin(state, data) {
             state.showLogin = data
         },
+        setShowAgreement(state, payload) {
+            state.showAgreement = payload;
+        }
     },
     actions: {
         setUser({ commit }, data) {
@@ -26,5 +33,8 @@ export default {
         setShowLogin({ commit }, data) {
             commit('setShowLogin', data)
         },
+        setShowAgreement({ commit }, data) {
+            commit('setShowAgreement', data)
+        }
     },
 }

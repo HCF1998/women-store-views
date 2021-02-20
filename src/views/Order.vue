@@ -13,65 +13,61 @@
 
         <!-- 我的订单主要内容 -->
         <div class="order-content" v-if="orders.length > 0">
-            <div class="content" v-for="(item, index) in orders" :key="index">
-                <ul>
-                    <!-- 我的订单表头 -->
-                    <li class="order-info">
-                        <div class="order-id">订单编号: {{ item[0].order_id }}</div>
-                        <div class="order-del">
-                            <el-popconfirm
-                                title="确定要删除该订单吗?"
-                                confirmButtonText="是的"
-                                cancelButtonText="留着"
-                                @onConfirm="delOrder(item[0].order_id)"
-                            >
-                                <el-button slot="reference" type="danger" icon="el-icon-delete" circle></el-button>
-                            </el-popconfirm>
-                        </div>
-                        <div class="order-time">订单时间: {{ item[0].order_time | dateFormat }}</div>
-                    </li>
-                    <li class="header">
-                        <div class="pro-img"></div>
-                        <div class="pro-name">商品名称</div>
-                        <div class="pro-price">单价</div>
-                        <div class="pro-num">数量</div>
-                        <div class="pro-total">小计</div>
-                    </li>
-                    <!-- 我的订单表头END -->
-
-                    <!-- 订单列表 -->
-                    <li class="product-list" v-for="(product, i) in item" :key="i">
-                        <div class="pro-img">
-                            <router-link :to="{ path: '/goods/details', query: { productID: product.product_id } }">
-                                <img :src="$target + product.product_picture" />
-                            </router-link>
-                        </div>
-                        <div class="pro-name">
-                            <router-link :to="{ path: '/goods/details', query: { productID: product.product_id } }">{{
-                                product.product_name
-                            }}</router-link>
-                        </div>
-                        <div class="pro-price">{{ product.product_price }}元</div>
-                        <div class="pro-num">{{ product.product_num }}</div>
-                        <div class="pro-total pro-total-in">{{ product.product_price * product.product_num }}元</div>
-                    </li>
-                </ul>
-                <div class="order-bar">
+                 <el-table
+                    ref="multipleTable"
+                    :data="orders"
+                    tooltip-effect="dark"
+                    style="width: 1225px;margin: 0 auto;"
+                    @selection-change="handleSelectionChange"
+                >
+                    <el-table-column type="selection" label="全选" width="100" />
+                    <el-table-column label="商品名称"  width="400">
+                        <template slot-scope="scope">
+                            <img :src="scope.row.img" alt="" style="float: left;width: 80px;maxHeight: 100px;">
+                            <p style="float: left;lineHeight: 80px;marginLeft: 40px;">{{scope.row.name}}</p>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="单价"  width="140" >
+                        <template slot-scope="scope">
+                            <span>{{scope.row.price}}元</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="数量" width="240">
+                        <template slot-scope="scope">
+                            <el-input-number v-model="scope.row.number" :min="1" :max="100" :disabled="scope.row.isNumber"></el-input-number>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="小计"  width="140" >
+                        <template slot-scope="scope">
+                            <span style="color: orange">
+                                {{scope.row.price * scope.row.number}}元
+                            </span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作"  width="140" >
+                        <template slot-scope="scope">
+                            <el-link type="primary" style="marginRight: 40px;" @click="jumpToDetail(scope.row)">详情</el-link>
+                            <el-link type="danger">删除</el-link>
+                        </template>
+                    </el-table-column>
+                </el-table>
+               
+                <div class="order-bar" style="margin: 0 auto;">
                     <div class="order-bar-left">
                         <span class="order-total">
                             共
-                            <span class="order-total-num">{{ total[index].totalNum }}</span> 件商品
+                            <span class="order-total-num">{{ total.totalNum }}</span> 件商品
+                            已选 <span class="order-total-num"> {{ total.chooseNum }} </span> 件商品
                         </span>
                     </div>
                     <div class="order-bar-right">
                         <span>
                             <span class="total-price-title">合计：</span>
-                            <span class="total-price">{{ total[index].totalPrice }}元</span>
+                            <span class="total-price">{{ total.totalPrice }}元</span>
                         </span>
+                        <el-button type="primary" style="margin:0 0 10px 20px;">去结算</el-button>
                     </div>
-                    <!-- 订单列表END -->
                 </div>
-            </div>
             <div style="margin-top:-40px;"></div>
         </div>
         <!-- 我的订单主要内容END -->
@@ -90,36 +86,91 @@
 export default {
     data() {
         return {
-            orders: [], // 订单列表
-            total: [], // 每个订单的商品数量及总价列表
+            orders: [
+                {
+                    id: '1',
+                    img: 'https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg',
+                    name: '衣服1',
+                    price: 233,
+                    number: 1,
+                    isNumber: true
+                },
+                {
+                    id: '2',
+                    img: 'https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg',
+                    name: '衣服2',
+                    price: 233,
+                    number: 2,
+                    isNumber: true
+                },
+                {
+                    id: '3',
+                    img: 'https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg',
+                    name: '衣服3',
+                    price: 451,
+                    number: 1,
+                    isNumber: true
+                },
+                {
+                    id: '4',
+                    img: 'https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg',
+                    name: '衣服4',
+                    price: 23,
+                    number: 1,
+                    isNumber: true
+                },
+                {
+                    id: '5',
+                    img: 'https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg',
+                    name: '衣服5',
+                    price: 33,
+                    number: 3,
+                    isNumber: true
+                },
+           ],
+            total: {
+                totalNum: 0,
+                chooseNum: 0,
+                totalPrice: 0
+            }, // 每个订单的商品数量及总价列表
         }
     },
     activated() {
         // 获取订单数据
-        this.getOrder()
+        // this.getOrder()
     },
     watch: {
-        // 通过订单信息，计算出每个订单的商品数量及总价
-        orders: function(val) {
-            let total = []
-            for (let i = 0; i < val.length; i++) {
-                const element = val[i]
-
-                let totalNum = 0
-                let totalPrice = 0
-                for (let j = 0; j < element.length; j++) {
-                    const temp = element[j]
-                    totalNum += temp.product_num
-                    totalPrice += temp.product_price * temp.product_num
+        orders: {
+            handler(val) {
+                if(val) {
+                    this.total.totalNum = val.length
                 }
-                total.push({ totalNum, totalPrice })
-            }
-            this.total = total
-        },
+            },
+            immediate: true
+        }
     },
     methods: {
+        handleSelectionChange(val) {
+            if(val) {
+                this.total.chooseNum = val.length;
+                var totalPrice = 0;
+                val.forEach(item => {
+                    item.isNumber = false;
+                    totalPrice += item.price * item.number;
+                });
+                this.total.totalPrice = totalPrice;
+            }
+        },
+        jumpToDetail({id}) {
+            this.$router.push({
+                name: 'Details',
+                params: {
+                    categoryID: id
+                }
+            })
+        },
         getOrder() {
-            this.$axios
+            this.$http
                 .post('/api/user/order/getOrder', {
                     user_id: this.$store.getters.getUser.user_id,
                 })
@@ -137,7 +188,7 @@ export default {
                 })
         },
         delOrder(order) {
-            this.$axios
+            this.$http
                 .post('/api/user/order/deleteOrder', {
                     user_id: this.$store.getters.getUser.user_id,
                     order_id: order,

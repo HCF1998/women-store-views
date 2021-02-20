@@ -10,19 +10,34 @@ const routes = [
         component: () => import('../views/Home.vue'),
     },
     {
-        path: '/goods',
-        name: 'Goods',
-        component: () => import('../views/Goods.vue'),
+        path: '/login',
+        name: 'Login',
+        component: () => import('../views/Login.vue')
     },
     {
-        path: '/goods/details',
+        path: '/register',
+        name: 'Register',
+        component: () => import('../views/Register.vue')
+    },
+    {
+        path: '/reset',
+        name: 'Reset',
+        component: () => import('../views/ResetPwd.vue'),
+    },
+    {
+        path: '/goodsList',
+        name: 'GoodsList',
+        component: () => import('../views/GoodsList.vue'),
+    },
+    {
+        path: '/goods/:categoryID',
         name: 'Details',
         component: () => import('../views/Details.vue'),
     },
     {
-        path: '/about',
-        name: 'About',
-        component: () => import('../views/About.vue'),
+        path: '/personCenter',
+        name: 'PersonCenter',
+        component: () => import('../views/PersonCenter.vue'),
     },
     {
         path: '/shoppingCart',
@@ -56,15 +71,15 @@ const routes = [
             requireAuth: true, // 需要验证登录状态
         },
     },
-    {
-        path: '/error',
-        name: 'Error',
-        component: () => import('../components/Error.vue'),
-    },
-    {
-        path: '*',
-        redirect: '/error',
-    },
+    // {
+    //     path: '/error',
+    //     name: 'Error',
+    //     component: () => import('../components/Error.vue'),
+    // },
+    // {
+    //     path: '*',
+    //     redirect: '/error',
+    // },
 ]
 
 const router = new VueRouter({

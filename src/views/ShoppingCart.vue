@@ -72,7 +72,7 @@
             <div class="cart-bar">
                 <div class="cart-bar-left">
                     <span>
-                        <router-link to="/goods">继续购物</router-link>
+                        <router-link :to="{name: 'GoodsList'}">继续购物</router-link>
                     </span>
                     <span class="sep">|</span>
                     <span class="cart-total">

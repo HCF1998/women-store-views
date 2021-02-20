@@ -2,116 +2,127 @@
     <div class="home" id="home" name="home">
         <!-- 轮播图 -->
         <div class="block">
-            <el-carousel height="460px">
+            <treeList :treeList="treeList"/>
+            <el-carousel height="460px" style="width: 1025px;display: inline-block;">
                 <el-carousel-item v-for="item in carousel" :key="item.carousel_id">
-                    <img style="height:460px;" :src="$target + item.imgPath" :alt="item.describes" />
+                    <img style="height:460px;width: 100%;" :src="item.imgPath" :alt="item.describes" />
                 </el-carousel-item>
             </el-carousel>
         </div>
-        <!-- 轮播图END -->
-
-        <div class="main-box">
-            <div class="main">
-                <!-- 手机商品展示区域 -->
-                <div class="phone">
-                    <div class="box-hd">
-                        <div class="title">手机</div>
-                    </div>
-                    <div class="box-bd">
-                        <div class="promo-list">
-                            <router-link to>
-                                <img :src="$target + 'public/imgs/phone/phone.png'" />
-                            </router-link>
-                        </div>
-                        <div class="list">
-                            <MyList :list="phoneList" :isMore="true"></MyList>
-                        </div>
-                    </div>
+        <!-- 首页展示 -->
+        <div class="home-wrapper">
+            <h5>当季流行</h5>
+            <div class="home-wrapper-bottom">
+                <div class="fl bigImg">
+                    <img src="https://img.alicdn.com/tps/i4/TB1U8CRhKEJL1JjSZFGwu16OXXa.png" alt="">
                 </div>
-                <!-- 手机商品展示区域END -->
-
-                <!-- 家电商品展示区域 -->
-                <div class="appliance" id="promo-menu">
-                    <div class="box-hd">
-                        <div class="title">家电</div>
-                        <div class="more" id="more">
-                            <MyMenu :val="2" @fromChild="getChildMsg">
-                                <span slot="1">热门</span>
-                                <span slot="2">电视影音</span>
-                            </MyMenu>
-                        </div>
-                    </div>
-                    <div class="box-bd">
-                        <div class="promo-list">
-                            <ul>
-                                <li>
-                                    <img :src="$target + 'public/imgs/appliance/appliance-promo1.png'" />
-                                </li>
-                                <li>
-                                    <img :src="$target + 'public/imgs/appliance/appliance-promo2.png'" />
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="list">
-                            <MyList :list="applianceList" :isMore="true"></MyList>
-                        </div>
-                    </div>
+                <div class="fl showList">
+                    <HomeList v-for="item in homeList" :key="item.id" :objData="item"/>
                 </div>
-                <!-- 家电商品展示区域END -->
-
-                <!-- 配件商品展示区域 -->
-                <div class="accessory" id="promo-menu">
-                    <div class="box-hd">
-                        <div class="title">配件</div>
-                        <div class="more" id="more">
-                            <MyMenu :val="3" @fromChild="getChildMsg2">
-                                <span slot="1">热门</span>
-                                <span slot="2">保护套</span>
-                                <span slot="3">充电器</span>
-                            </MyMenu>
-                        </div>
-                    </div>
-                    <div class="box-bd">
-                        <div class="promo-list">
-                            <ul>
-                                <li>
-                                    <img :src="$target + 'public/imgs/accessory/accessory-promo1.png'" alt />
-                                </li>
-                                <li>
-                                    <img :src="$target + 'public/imgs/accessory/accessory-promo2.png'" alt />
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="list">
-                            <MyList :list="accessoryList" :isMore="true"></MyList>
-                        </div>
-                    </div>
-                </div>
-                <!-- 配件商品展示区域END -->
             </div>
         </div>
     </div>
 </template>
 
 <script>
-// @ is an alias to /src
+const treeList = () => import('@/components/TreeList.vue');
 export default {
     name: 'Home',
+    components: {
+        treeList
+    },
     data() {
         return {
-            carousel: '', // 轮播图数据
-            phoneList: '', // 手机商品列表
-            // 家电
-            miTvList: '', // 小米电视商品列表
-            applianceList: '', // 家电商品列表
-            applianceHotList: '', //热门家电商品列表
-            applianceActive: 1, // 家电当前选中的商品分类
-            // 配件
-            accessoryList: '', //配件商品列表
-            accessoryHotList: '', //热门配件商品列表（热门）
-            protectingShellList: '', // 保护套商品列表
-            chargerList: '', //充电器商品列表
-            accessoryActive: 1, // 配件当前选中的商品分类
+            carousel: [
+                {imgPath: 'https://img.alicdn.com/imgextra/i2/O1CN01aQaSDt1IAiVGiICrs_!!6000000000853-0-tps-1130-500.jpg_q100.jpg_.webp'},
+                {imgPath: 'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/6a60c7eb2229733d85d8b4aea3be4ddd.jpg?thumb=1&w=1226&h=460&f=webp&q=90'}
+            ], // 轮播图数据
+            // 列表主体数据
+            homeList: [
+                {
+                    id: '1',
+                    smallImgs: ['https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg'],
+                    title1: '秋季女孩基础打底衫', // 标题1
+                    title2: '时尚修身长袖针织衫', // 标题2
+                    price: '79.0' // 价格
+                },
+                {
+                    id: '2',
+                    smallImgs: ['https://img.alicdn.com/bao/uploaded/i3/92688455/O1CN01Bagzvh2CKRMklRq0y_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i3/92688455/O1CN01Bagzvh2CKRMklRq0y_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg'],
+                    title1: '秋季女孩基础打底衫', // 标题1
+                    title2: '时尚修身长袖针织衫', // 标题2
+                    price: '79.0' // 价格
+                },
+                {
+                    id: '3',
+                    smallImgs: ['https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg'],
+                    title1: '秋季女孩基础打底衫', // 标题1
+                    title2: '时尚修身长袖针织衫', // 标题2
+                    price: '79.0' // 价格
+                },
+                {
+                    id: '4',
+                    smallImgs: ['https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg'],
+                    title1: '秋季女孩基础打底衫', // 标题1
+                    title2: '时尚修身长袖针织衫', // 标题2
+                    price: '79.0' // 价格
+                },
+                {
+                    id: '5',
+                    smallImgs: ['https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg'],
+                    title1: '秋季女孩基础打底衫', // 标题1
+                    title2: '时尚修身长袖针织衫', // 标题2
+                    price: '79.0' // 价格
+                },
+                {
+                    id: '6',
+                    smallImgs: ['https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg'],
+                    title1: '秋季女孩基础打底衫', // 标题1
+                    title2: '时尚修身长袖针织衫', // 标题2
+                    price: '79.0' // 价格
+                },
+                {
+                    id: '7',
+                    smallImgs: ['https://img.alicdn.com/bao/uploaded/i3/92688455/O1CN01Bagzvh2CKRMklRq0y_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg'],
+                    title1: '秋季女孩基础打底衫', // 标题1
+                    title2: '时尚修身长袖针织衫', // 标题2
+                    price: '79.0' // 价格
+                },
+                {
+                    id: '8',
+                    smallImgs: ['https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i3/92688455/O1CN01Bagzvh2CKRMklRq0y_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg'],
+                    title1: '秋季女孩基础打底衫', // 标题1
+                    title2: '时尚修身长袖针织衫', // 标题2
+                    price: '79.0' // 价格
+                }
+            ],
+            treeList: [
+                {
+                    title: '手机 pad',
+                    children: [
+                        {
+                            id: '0',
+                            img: '',
+                            title: '小米11'
+                        }
+                    ]
+                },
+                {
+                    title: '手机 pad',
+                    children: [
+                        {   
+                            id: '1',
+                            img: require('@/assets/logo.png'),
+                            title: '小米11'
+                        },
+                        {
+                            id: '2',
+                            img: '',
+                            title: '小米11 pro'
+                        }
+                    ]
+                }
+            ]
         }
     },
     watch: {
@@ -157,25 +168,6 @@ export default {
             }
         },
     },
-    created() {
-        // 获取轮播图数据
-        this.$axios
-            .post('/api/resources/carousel', {})
-            .then((res) => {
-                this.carousel = res.data.carousel
-            })
-            .catch((err) => {
-                return Promise.reject(err)
-            })
-
-        // 获取各类商品数据
-        this.getPromo('手机', 'phoneList')
-        this.getPromo(['电视机', '空调', '洗衣机'], 'applianceList', '/api/product/getHotProduct') // 家电（热门）
-        this.getPromo('电视机', 'miTvList') // 家电（电影影音）
-        this.getPromo('保护套', 'protectingShellList') // 配件（保护套）
-        this.getPromo('充电器', 'chargerList') // 配件（充电器）
-        this.getPromo(['保护套', '保护膜', '充电器', '充电宝'], 'accessoryList', '/api/product/getHotProduct') // 配件（热门）
-    },
     methods: {
         // 获取家电模块子组件传过来的数据
         getChildMsg(val) {
@@ -202,6 +194,38 @@ export default {
     },
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+.home-wrapper{
+    width: 1225px;
+    margin: 0 auto;
+    h5{
+        line-height: 40px;
+        font-size: 16px;
+        margin: 20px 0;
+        &::before{
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 23px;
+            margin-right: 6px;
+            vertical-align: middle;
+            background: rgb(139, 8, 8);
+        }
+    }
+    &-bottom{
+        overflow: hidden;
+        .bigImg{
+            width: 280px;
+            height: 620px;
+            img{
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .showList{
+            width: 940px;
+        }
+    }
+}
 @import '../assets/css/index.scss';
 </style>

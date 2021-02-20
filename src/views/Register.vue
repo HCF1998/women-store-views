@@ -1,36 +1,46 @@
-<!--
- * @Description: 用户注册组件
- * @Author: hai-27
- * @Date: 2020-02-19 22:20:35
- * @LastEditors  : lucas
- * @LastEditTime : 2020-09-19 05:47:14
- -->
 <template>
-    <div id="register">
-        <el-dialog title="注册" width="300px" center :visible.sync="isRegister">
-            <el-form :model="RegisterUser" :rules="rules" status-icon ref="ruleForm" class="demo-ruleForm">
-                <el-form-item prop="name">
-                    <el-input prefix-icon="el-icon-user-solid" placeholder="请输入账号" v-model="RegisterUser.name"></el-input>
-                </el-form-item>
-                <el-form-item prop="pass">
-                    <el-input prefix-icon="el-icon-view" type="password" placeholder="请输入密码" v-model="RegisterUser.pass"></el-input>
-                </el-form-item>
-                <el-form-item prop="confirmPass">
-                    <el-input
-                        prefix-icon="el-icon-view"
-                        type="password"
-                        placeholder="请再次输入密码"
-                        v-model="RegisterUser.confirmPass"
-                    ></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button size="medium" type="primary" @click="Register" style="width:100%;">注册</el-button>
-                </el-form-item>
-            </el-form>
-        </el-dialog>
+  <div class="register-wrapper">
+    <div class="register-wrapper-form">
+      <img src="@/assets/imgs/logo.png" alt="">
+      <h4>注册女人商城账号</h4>
+      <p>国家/地区</p>
+      <el-select v-model="selectedOption" placeholder="请选择" style="width: 400px;" filterable>
+        <el-option-group
+          v-for="group in options"
+          :key="group.label"
+          :label="group.label">
+          <el-option
+            v-for="item in group.options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-option-group>
+      </el-select>
+      <p>成功注册帐号后，国家/地区将不能被修改</p>
+      <p>手机号码</p>
+      <el-input placeholder="手机号码" v-model="phoneNumber" style="marginBottom: 20px;">
+        <template slot="prepend">+86</template>
+      </el-input>
+      <el-input placeholder="短信验证码" v-model="verificationCode" maxlength="6">
+        <el-button slot="append" style="cursor: pointer" v-if="verificationCodeText"
+          @click="getVerificationCode">
+          获取验证码
+        </el-button>
+        <el-button slot="append" style="cursor: pointer" v-if="!verificationCodeText">
+          重新获取({{count}})
+        </el-button>
+      </el-input>
+      <p v-show="autofocus" class="login-wrapper-account-warning"><i class="el-icon-warning"></i>手机号格式不正确</p>
+      <el-button type="primary" @click="Register" style="width: 400px;">立即注册</el-button>
     </div>
+  </div>
 </template>
+
 <script>
+import apiData from '@/lib/apiData';
+import options from '@/lib/countryAndArea.json'
 export default {
     name: 'MyRegister',
     props: ['register'],
@@ -92,7 +102,7 @@ export default {
             }
         }
         return {
-            isRegister: false, // 控制注册组件是否显示
+            isRegister: true, // 控制注册组件是否显示
             RegisterUser: {
                 name: '',
                 pass: '',
@@ -104,6 +114,14 @@ export default {
                 pass: [{ validator: validatePass, trigger: 'blur' }],
                 confirmPass: [{ validator: validateConfirmPass, trigger: 'blur' }],
             },
+            options,    //国家和地区列表
+            selectedOption: 'China', // 被选中国家或地区（默认中国）
+            phoneNumber: '',  // 注册的手机号
+            autofocus: false,
+            verificationCode: '', // 验证码
+            verificationCodeText: true, // 获取验证码 || 重新获取（60）
+            count: '', // 倒计时计数
+            timer: null, // 倒计时定时器
         }
     },
     watch: {
@@ -122,37 +140,70 @@ export default {
         },
     },
     methods: {
+      // 获取短信验证码接口
+      getVerificationCode() {
+        // console.log(this.phoneNumber);
+        // 验证手机号码
+        const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
+        if(this.phoneNumber.match(reg)) {
+          console.log('验证成功');
+          this.autofocus = false;
+          this.countdown();
+          // 调接口
+        } else {
+          console.log('验证失败');
+          // 聚焦
+          this.autofocus = true;
+        }
+      },
         Register() {
             // 通过element自定义表单校验规则，校验用户输入的用户信息
-            this.$refs['ruleForm'].validate((valid) => {
+            // this.$refs['ruleForm'].validate((valid) => {
                 //如果通过校验开始注册
-                if (valid) {
-                    this.$axios
-                        .post('/api/users/register', {
-                            userName: this.RegisterUser.name,
-                            password: this.RegisterUser.pass,
+                // if (valid) {
+                    this.$http
+                        .post(apiData.register, {
+                            loginName: this.phoneNumber,
+                            passwordMd5: this.verificationCode,
                         })
                         .then((res) => {
-                            // “001”代表注册成功，其他的均为失败
-                            if (res.data.code === '001') {
-                                // 隐藏注册组件
-                                this.isRegister = false
-                                // 弹出通知框提示注册成功信息
-                                this.notifySucceed(res.data.msg)
-                            } else {
-                                // 弹出通知框提示注册失败信息
-                                this.notifyError(res.data.msg)
-                            }
+                           console.log(res)
                         })
                         .catch((err) => {
                             return Promise.reject(err)
                         })
-                } else {
-                    return false
-                }
-            })
+                // } else {
+                //     return false
+                // }
+            // })
         },
     },
 }
 </script>
-<style></style>
+
+<style lang="scss" scoped>
+.register-wrapper{
+  width: 600px;
+  margin: 0 auto;
+  background: #fff;
+  // text-align: center;
+  padding: 30px 60px;
+  &-form{
+    width: 400px;
+    margin: 0 auto;
+    img{
+      width: 160px;
+      text-align: center;
+    }
+    h4{
+      margin-bottom: 20px;
+      font-size: 26px;
+      font-weight: 700;
+      text-align: center;
+    }
+    p,img{
+      margin: 20px 0;
+    }
+  }
+}
+</style>
