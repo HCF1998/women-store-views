@@ -55,7 +55,32 @@ export default {
         return {
             categoryList: '', //分类列表
             categoryID: [], // 分类id
-            product: '', // 商品列表
+            product: [
+                {
+                    product_id: '1',
+                    product_picture: 'https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg',
+                    product_name: '衣服1',
+                    product_title: '品质有保证',
+                    product_selling_price: 123,
+                    product_price: 199
+                },
+                {
+                    product_id: '2',
+                    product_picture: 'https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg',
+                    product_name: '衣服2',
+                    product_title: '品质有保证',
+                    product_selling_price: 123,
+                    product_price: 199
+                },
+                {
+                    product_id: '3',
+                    product_picture: 'https://img.alicdn.com/bao/uploaded/i3/92688455/O1CN01Bagzvh2CKRMklRq0y_!!92688455.jpg_b.jpg',
+                    product_name: '衣服3',
+                    product_title: '品质有保证',
+                    product_selling_price: 133,
+                    product_price: 199
+                }
+            ], // 商品列表
             productList: '',
             total: 0, // 商品总量
             pageSize: 15, // 每页显示的商品数量

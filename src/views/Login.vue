@@ -37,13 +37,14 @@
 
 <script>
 import apiData from '@/lib/apiData';
+import {mapMutations} from 'vuex';
   export default {
     data() {
       return {
         showModel: 'account', // 展示模块
         showModelText: '手机短信登录/注册',
-        account: '', // 账号
-        password: '', // 密码
+        account: '15622091887', // 账号
+        password: '7258AECBBE28EA7D4E4A46C1AF2087CC', // 密码
         phoneNumber: '', // 手机号
         verificationCode: '', // 验证码
         autofocus: false, // 聚焦
@@ -53,6 +54,7 @@ import apiData from '@/lib/apiData';
       }
     },
     methods: {
+      ...mapMutations(['setToken']),
       // 切换账号登录和短信登录
       onShowModel() {
         this.showModel = this.showModel === 'account' ? 'message' : 'account';
@@ -93,10 +95,23 @@ import apiData from '@/lib/apiData';
       },
       // 登录
       login() {
-        this.$http.post(apiData.login, {
+        let data = {
           loginName: this.account,
           passwordMd5: this.password
-        }).then(res => {
+        }
+        this.$axios.post(apiData.login,data).then(res => {
+          if(res.resultCode == 200) {
+            }
+            localStorage.setItem('token', res.data.data);
+            setTimeout(() => {
+              this.getUserInfo();
+            }, 2000)
+            this.$router.push({name: 'Home'});
+          this.notifySucceed(res.message);
+        })
+      },
+      getUserInfo() {
+        this.$axios.get(apiData.getUserInfo).then(res => {
           console.log(res)
         })
       },

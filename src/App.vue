@@ -74,6 +74,7 @@
 import Footer from '@/components/Footer.vue';
 import Agreement from '@/components/Agreement.vue';
 import { mapActions, mapGetters, mapState } from 'vuex'
+import apiData from '@/lib/apiData'
 export default {
     components: {
         Footer,
@@ -81,7 +82,7 @@ export default {
     },
     data() {
         return {
-            isLogin: true,
+            isLogin: false,
             register: false, // 是否显示注册组件
             visible: false,
             activeIndex: '', // 头部导航栏选中的标签
@@ -89,6 +90,7 @@ export default {
         }
     },
     beforeUpdate() {
+        // this.getUserInfo();
         // 组件加载即激活的路由（default-active="activeIndex" == index）
         this.activeIndex = this.$route.path
     },
@@ -135,6 +137,11 @@ export default {
     },
     methods: {
         ...mapActions(['setUser', 'setShowLogin', 'setShoppingCart', 'setShowAgreement']),
+        // getUserInfo() {
+        //     this.$http.get(apiData.getUserInfo).then(res => {
+        //         console.log(res)
+        //     })
+        // },
         login() {
             // 跳转登录页
            this.$router.push({name: 'Login'});

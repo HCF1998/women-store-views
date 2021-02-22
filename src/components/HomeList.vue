@@ -1,11 +1,11 @@
 <template>
-  <div class="homeList-wrapper" @click="jumpToDetail(objData.id)">
-    <img :src="bigImg || objData.smallImgs[0]" alt="" class="bigImg">
+  <div class="homeList-wrapper">
+    <img :src="bigImg || objData.smallImgs[0]" alt="" class="bigImg" @click="jumpToDetail(objData.id)">
     <ul class="homeList-wrapper-smallImg">
       <li v-for="(item, index) in objData.smallImgs" :class="{'selected': index == nowChoose}" :key="index" @click="choose(item, index)"><img :src="item" alt=""></li>
     </ul>
-    <p>{{objData.title1}}</p>
-    <p v-if="objData.title2">{{objData.title2}}</p>
+    <p class="title">{{objData.title1}}</p>
+    <p v-if="objData.title2" class="title">{{objData.title2}}</p>
     <p>￥{{objData.price}}</p>
   </div>
 </template>
@@ -70,9 +70,12 @@
   width: 210px;
   height: 300px;
   box-shadow: 0 0 3px 1px rgba(0,0,0,.4);
-  margin:0 0 20px 24px;
   display: inline-block;
+  margin: 0 42px 30px 0;
   background: #fff;
+  &:nth-child(5n) {
+    margin-right: 0;
+  }
   &:hover{
     box-shadow: 0 0 3px 3px rgba(0,0,0,.4);
   }
@@ -102,10 +105,16 @@
   }
   p{
     text-align: center;
+    padding: 0 10px;
     &:last-child{
       color: red;
       font-weight: 700;
     }
+  }
+  .title{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
   }
 }
 </style>

@@ -1,6 +1,27 @@
 export default {
     state: {
-        shoppingCart: [],
+        shoppingCart: [
+            {
+                id: "1", // 购物车id
+                productID: "1", // 商品id
+                productName: "衣服1", // 商品名称
+                productImg: "https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg", // 商品图片
+                price: 120, // 商品价格
+                num: 1, // 商品数量
+                maxNum: "", // 商品限购数量
+                check: false // 是否勾选
+            },
+            {
+                id: "1", // 购物车id
+                productID: "2", // 商品id
+                productName: "衣服2", // 商品名称
+                productImg: "https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg", // 商品图片
+                price: 120, // 商品价格
+                num: 1, // 商品数量
+                maxNum: "", // 商品限购数量
+                check: false // 是否勾选
+            }
+        ],
         /* shoppingCart结构
         shoppingCart = {
         id: "", // 购物车id

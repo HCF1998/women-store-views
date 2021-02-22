@@ -65,11 +65,18 @@
                 <div class="evaluate-wrapper-center">
                     <p>{{item.evaluate}}</p>
                     <div v-if="item.imgs.length > 0">
-                        <img v-for="(it, i) in item.imgs" :key="i" :src="it" alt="">
+                        <img v-for="(it, i) in item.imgs" :key="i" :src="it" alt="" @click="showReview(it)">
                     </div>
                 </div>
             </li>
         </ul>
+        <el-dialog
+            :visible.sync="showImg"
+            width="30%"
+            :close-on-click-modal="false"
+        >
+            <img :src="this.reviewImg" alt="">
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -77,6 +84,8 @@ import { mapActions } from 'vuex'
 export default {
     data() {
         return {
+            reviewImg: '',
+            showImg: false,
             dis: false, // 控制“加入购物车按钮是否可用”
             productID: '', // 商品id
             productDetails: {
@@ -92,7 +101,7 @@ export default {
                     intro: '衣服1'
                 },
                 {
-                    product_picture: 'https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg',
+                    product_picture: 'https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg',
                     intro: '衣服2'
                 }
             ], // 商品图片
@@ -101,7 +110,7 @@ export default {
             evaluate: [
                 {
                     id: '1',
-                    avatar: 'https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg',
+                    avatar: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2856846879,389279115&fm=26&gp=0.jpg',
                     name: '用户1',
                     time: '2020-10-10',
                     evaluate: '很好很好很好很好很好很好很好很好很好很好',
@@ -109,11 +118,11 @@ export default {
                 },
                 {
                     id: '2',
-                    avatar: 'https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg',
+                    avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3392663359,4194879068&fm=26&gp=0.jpg',
                     name: '用户2',
                     time: '2020-10-12',
-                    evaluate: '很好很好很好很好很好很好很好很好很好很好',
-                    imgs: ['https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg','https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg']
+                    evaluate: '很好很好很好很好很好很好很好很好很好很好good goods;)',
+                    imgs: ['https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg','https://g-search1.alicdn.com/img/bao/uploaded/i4/i2/199343403/O1CN01DtT3QB1b0cTHfYtyR_!!0-item_pic.jpg_250x250.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg']
                 }
             ],
         }
@@ -134,18 +143,26 @@ export default {
     },
     watch: {
         // 监听商品id的变化，请求后端获取商品数据
-        productID: function(val) {
-            this.getDetails(val)
-            this.getDetailsPicture(val)
-        },
+        // productID: function(val) {
+        //     this.getDetails(val)
+        //     this.getDetailsPicture(val)
+        // },
+    },
+    mounted() {
+        this.getDetails();
     },
     methods: {
         ...mapActions(['unshiftShoppingCart', 'addShoppingCartNum']),
+        showReview(img) {
+            this.reviewImg = img;
+            this.showImg = true;
+        },
         // 获取商品详细信息
         getDetails(val) {
-            this.$axios
-                .post('/api/product/getDetails', {
-                    productID: val,
+            this.$http.get(apiData.goodsDetail, {
+                    params: {
+                        productID: 10895,
+                    }
                 })
                 .then((res) => {
                     this.productDetails = res.data.Product[0]

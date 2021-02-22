@@ -19,12 +19,12 @@
                 <p class="title">收货地址</p>
                 <div class="address-body">
                     <ul>
-                        <li :class="item.id == confirmAddress ? 'in-section' : ''" v-for="item in address" :key="item.id">
+                        <li :class="item.defaultFlag == 1 ? 'in-section' : ''" v-for="item in address" :key="item.id">
                             <h2>{{ item.name }}</h2>
                             <p class="phone">{{ item.phone }}</p>
                             <p class="address">{{ item.address }}</p>
                         </li>
-                        <li class="add-address">
+                        <li class="add-address" @click="addAddress">
                             <i class="el-icon-circle-plus-outline"></i>
                             <p>添加新地址</p>
                         </li>
@@ -39,7 +39,7 @@
                 <div class="goods-list">
                     <ul>
                         <li v-for="item in getCheckGoods" :key="item.id">
-                            <img :src="$target + item.productImg" />
+                            <img :src="item.productImg" />
                             <span class="pro-name">{{ item.productName }}</span>
                             <span class="pro-price">{{ item.price }}元 x {{ item.num }}</span>
                             <span class="pro-status"></span>
@@ -112,13 +112,38 @@
             <!-- 结算导航END -->
         </div>
         <!-- 主要内容容器END -->
+        <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+            <el-form :model="form">
+                <el-form-item label="姓名：" :label-width="formLabelWidth">
+                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="电话：" :label-width="formLabelWidth">
+                    <el-input v-model="form.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="地址：" :label-width="formLabelWidth">
+                    <VDistpicker style="fontSize: 12px;" :province="form.province.value" :city="form.city.value" :area="form.area.value" @selected="addressSelected"/>
+                </el-form-item>
+                <el-form-item label="详细地址：" :label-width="formLabelWidth">
+                    <el-input placeholder="小区楼栋/乡村名称" v-model="form.detailAddress"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="saveAddress">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
+const VDistpicker = () => import('v-distpicker')
+import apiData from '@/lib/apiData'
 export default {
     name: 'ConfirmOrder',
+    components: {
+        VDistpicker
+    },
     data() {
         return {
             // 虚拟数据
@@ -138,9 +163,20 @@ export default {
                     address: '广东 深圳市 福田区 景田北六街 ***',
                 },
             ],
+            dialogFormVisible: false,
+            form: {
+                name: '',
+                phone: null,
+                detailAddress: '',
+                province: {},
+                city: {},
+                area: {}
+            },
+            formLabelWidth: '120px',
         }
     },
     created() {
+        this.getAddress();
         // 如果没有勾选购物车商品直接进入确认订单页面,提示信息并返回购物车
         if (this.getCheckNum < 1) {
             this.notifyError('请勾选商品后再结算')
@@ -153,6 +189,52 @@ export default {
     },
     methods: {
         ...mapActions(['deleteShoppingCart']),
+        getAddress() {
+            this.$http.get(apiData.getAddress).then(res => {
+                if(res.resultCode == 200) {
+                    this.address = res.data.map(item =>{
+                        return{
+                            id: item.addressId,
+                            name: item.userName,
+                            phone: item.userPhone,
+                            address: item.provinceName + item.cityName + item.regionName + item.detailAddress,
+                            userId: item.userId,
+                            defaultFlag: item.defaultFlag
+                        }
+                    })
+                }
+            })
+        },
+        // 添加地址
+        addAddress() {
+            this.dialogFormVisible = true;
+        },
+        // 选择地址
+        addressSelected(val) {
+            this.form.province = val.province;
+            this.form.city = val.city;
+            this.form.area = val.area;
+        },
+        // 保存地址
+        saveAddress() {
+            // 保存地址接口
+            this.$http.post(apiData.saveAddress,{
+                userName: this.form.name,
+                userPhone: this.form.phone,
+                provinceName: this.form.province.value,
+                cityName: this.form.city.value,
+                regionName: this.form.area.value,
+                detailAddress: this.form.detailAddress,
+                defaultFlag: this.form.defaultFlag
+            }).then(res => {
+                if(res.resultCode == 200) {
+                    this.notifySucceed(res.message);
+                    this.dialogFormVisible = false;
+                }else{
+                    this.notifyError(res.message);
+                }
+            })
+        },
         addOrder() {
             this.$axios
                 .post('/api/user/order/addOrder', {
@@ -268,6 +350,7 @@ export default {
 .confirmOrder .content .address-body .add-address {
     text-align: center;
     line-height: 30px;
+    cursor: pointer;
 }
 .confirmOrder .content .address-body .add-address i {
     font-size: 30px;

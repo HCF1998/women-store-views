@@ -1,8 +1,9 @@
 export default {
     state: {
-        user: '用户1', // 登录的用户
+        user: '', // 登录的用户
         showLogin: false, // 用于控制是否显示登录组件
         showAgreement: false, // 是否显示协议模态框
+        token: ''
     },
     getters: {
         getUser(state) {
@@ -16,6 +17,9 @@ export default {
         }
     },
     mutations: {
+        setToken(state, data) {
+            state.token = data;
+        },
         setUser(state, data) {
             state.user = data
         },

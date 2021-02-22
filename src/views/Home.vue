@@ -5,19 +5,36 @@
             <treeList :treeList="treeList"/>
             <el-carousel height="460px" style="width: 1025px;display: inline-block;">
                 <el-carousel-item v-for="item in carousel" :key="item.carousel_id">
-                    <img style="height:460px;width: 100%;" :src="item.imgPath" :alt="item.describes" />
+                    <img style="height:460px;width: 100%;" :src="item.carouselUrl" :alt="item.redirectUrl" />
                 </el-carousel-item>
             </el-carousel>
         </div>
         <!-- 首页展示 -->
         <div class="home-wrapper">
-            <h5>当季流行</h5>
-            <div class="home-wrapper-bottom">
-                <div class="fl bigImg">
-                    <img src="https://img.alicdn.com/tps/i4/TB1U8CRhKEJL1JjSZFGwu16OXXa.png" alt="">
+            <div v-if="hotGoodses.length > 0">
+                <h5>当季流行</h5>
+                <div class="home-wrapper-bottom">
+                    <div class="fl showList">
+                        <HomeList v-for="item in hotGoodses" :key="item.id" :objData="item"/>
+                    </div>
                 </div>
-                <div class="fl showList">
-                    <HomeList v-for="item in homeList" :key="item.id" :objData="item"/>
+            </div>
+
+            <div v-if="newGoodses.length > 0">
+                <h5>新品上市</h5>
+                <div class="home-wrapper-bottom">
+                    <div class="fl showList">
+                        <HomeList v-for="item in newGoodses" :key="item.id" :objData="item"/>
+                    </div>
+                </div>
+            </div>
+            
+            <div v-if="recommendGoodses.length > 0">
+                <h5>推荐好物</h5>
+                <div class="home-wrapper-bottom">
+                    <div class="fl showList">
+                        <HomeList v-for="item in recommendGoodses" :key="item.id" :objData="item"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -26,6 +43,7 @@
 
 <script>
 const treeList = () => import('@/components/TreeList.vue');
+import apiData from '@/lib/apiData'
 export default {
     name: 'Home',
     components: {
@@ -38,7 +56,7 @@ export default {
                 {imgPath: 'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/6a60c7eb2229733d85d8b4aea3be4ddd.jpg?thumb=1&w=1226&h=460&f=webp&q=90'}
             ], // 轮播图数据
             // 列表主体数据
-            homeList: [
+            hotGoodses: [
                 {
                     id: '1',
                     smallImgs: ['https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i1/92688455/O1CN01luycfl2CKRMkUneZV_!!92688455.jpg_b.jpg'],
@@ -96,6 +114,8 @@ export default {
                     price: '79.0' // 价格
                 }
             ],
+            newGoodses: [], // 最新推荐
+            recommendGoodses: [],
             treeList: [
                 {
                     title: '手机 pad',
@@ -168,7 +188,52 @@ export default {
             }
         },
     },
+    mounted() {
+        this.getHome();
+    },
     methods: {
+        // 获取首页数据
+        getHome() {
+            this.$http.get(apiData.getHome).then(res => {
+                if(res.resultCode == 200) {
+                    // 轮播图数据
+                    this.carousel = res.data.carousels;
+                    // 当季流行数据
+                     this.hotGoodses = res.data.hotGoodses.map(item => {
+                        let smallImgs = [];
+                        return {
+                            smallImgs: smallImgs.push(item.goodsCoverImg),
+                            id: item.goodsId,
+                            title1: item.goodsName,
+                            title2: item.goodsIntro,
+                            price: item.sellingPrice,
+                        }
+                    });
+                    // 新商品上市数据
+                    this.newGoodses = res.data.newGoodses.map(item => {
+                        let smallImgs = [];
+                        return {
+                            smallImgs: smallImgs.push(item.goodsCoverImg),
+                            id: item.goodsId,
+                            title1: item.goodsName,
+                            title2: item.goodsIntro,
+                            price: item.sellingPrice,
+                        }
+                    });
+                    // 推荐好物数据
+                    this.recommendGoodses = res.data.recommendGoodses.map(item => {
+                        let smallImgs = [];
+                        return {
+                            smallImgs: smallImgs.push(item.goodsCoverImg),
+                            id: item.goodsId,
+                            title1: item.goodsName,
+                            title2: item.goodsIntro,
+                            price: item.sellingPrice,
+                        }
+                    });
+                }
+            })
+        },
         // 获取家电模块子组件传过来的数据
         getChildMsg(val) {
             this.applianceActive = val
@@ -221,9 +286,6 @@ export default {
                 width: 100%;
                 height: 100%;
             }
-        }
-        .showList{
-            width: 940px;
         }
     }
 }

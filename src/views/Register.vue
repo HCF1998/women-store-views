@@ -164,7 +164,7 @@ export default {
                     this.$http
                         .post(apiData.register, {
                             loginName: this.phoneNumber,
-                            passwordMd5: this.verificationCode,
+                            password: this.verificationCode,
                         })
                         .then((res) => {
                            console.log(res)

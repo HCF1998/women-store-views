@@ -15,12 +15,21 @@ const ApiLocalProxyList = {
 /**
  * 线上代理接口
  */
+
 const ApiOnlineProxyList = {
   '/api': {
-    target: 'http://121.36.31.64/womanmall/',
+    target: 'http://47.106.91.117:28019/',
     changeOrigin: true,
     pathRewrite: {
       '^/api': ''
+    },
+    secure: false
+  },
+  '/img': {
+    target: 'http://women-mall-goods-pictures.oss-cn-guangzhou.aliyuncs.com/',
+    changeOrigin: true,
+    pathRewrite: {
+      '^/img': ''
     },
     secure: false
   }

@@ -47,7 +47,7 @@
                     <el-table-column label="操作"  width="140" >
                         <template slot-scope="scope">
                             <el-link type="primary" style="marginRight: 40px;" @click="jumpToDetail(scope.row)">详情</el-link>
-                            <el-link type="danger">删除</el-link>
+                            <el-link type="danger" @click="deleteOrder(scope.row.id)">删除</el-link>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -83,6 +83,7 @@
     </div>
 </template>
 <script>
+import apiData from '@/lib/apiData';
 export default {
     data() {
         return {
@@ -187,25 +188,19 @@ export default {
                     return Promise.reject(err)
                 })
         },
-        delOrder(order) {
-            this.$http
-                .post('/api/user/order/deleteOrder', {
-                    user_id: this.$store.getters.getUser.user_id,
-                    order_id: order,
-                })
-                .then((res) => {
-                    if (res.data.code === '001') {
-                        // this.$router.go(0) // 重新加载整个组件给用户体验不好
-                        this.getOrder()
-                        this.notifySucceed('删除订单成功')
-                    } else {
-                        this.notifyError(res.data.msg)
-                    }
-                })
-                .catch((err) => {
-                    return Promise.reject(err)
-                })
-        },
+        // 删除
+        deleteOrder({id}) {
+            this.$http.post(apiData.deleteOrder, {
+                id: id
+            }).then(res => {
+                if(res.code == 1) {
+                    this.notifySucceed(res.msg);
+                    this.getOrder();
+                }else{
+                    this.notifyError(res.msg);
+                }
+            })
+        }
     },
 }
 </script>
